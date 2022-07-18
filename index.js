@@ -36,21 +36,31 @@
 //     }
 //   }
 // };
-// cekNum(5);
+// cekNum(11);
 
 // Nomor 3
+const url = "https://jsonplaceholder.typicode.com/users";
+
 const janji = new Promise((resolve, reject) => {
-  let condition = 1;
-  if (condition == 1) {
-    resolve("hello world");
+  let getData = fetch(url);
+  if (getData) {
+    resolve(getData);
   } else {
     reject("gagal");
   }
 });
 
 janji
-  .then((result) => {
-    console.log(result);
+  .then((res) => {
+    if (res.status >= 400) {
+      throw "Bad response from server";
+    }
+    return res.json();
+  })
+  .then((data) => {
+    data.forEach((e) => {
+      console.log(e.name);
+    });
   })
   .catch((error) => {
     console.log(error);
